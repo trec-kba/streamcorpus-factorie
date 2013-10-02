@@ -1,0 +1,22 @@
+# Example config file for factorie settings
+#
+# At minimum, replace ${HOME} with real paths to scala and where streamcorpus-factorie
+# is installed.
+
+streamcorpus.pipeline:
+  factorie_batch:
+    # the scala binary to call
+    scala: ${HOME}/scala-2.10.2/bin/scala
+    # directory full of jars to add to CLASSPATH
+    libdirs: [${HOME}/streamcorpus-factorie/scala/lib]
+    # other things to append to CLASSPATH
+    classpath_tail: [${HOME}/factorie, ${HOME}/streamcorpus-factorie/scala/classes]
+    # current working directory to live in when running factorie (might alternatively be /tmp)
+    cwd: ${HOME}/streamcorpus-factorie/scala
+
+  pythonpath:
+    # Tell streamcorpus.pipeline where to load more sources
+    factorie: ${HOME}/streamcorpus-factorie/py/src
+  setup_modules:
+    # Tell streamcorpus.pipeline to init this module so that we can be in pipeline configs
+    factorie: streamcorpus.pipeline.factorie
