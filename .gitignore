@@ -1,4 +1,6 @@
 *.py[cod]
+*~
+scala/classes
 
 # C extensions
 *.so
