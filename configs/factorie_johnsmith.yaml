@@ -1,0 +1,61 @@
+# Example config to run factorie on streamcorpus-pipeline/data/john-smith/john-smith-0.sc
+#
+# Assumes parent directory contains:
+#   streamcorpus/
+#   streamcorpus-pipeline/
+#   streamcorpus-factorie/
+#   factorie/
+#   scala-2.10.2/
+
+streamcorpus.pipeline:
+  embedded_logs: false
+  log_level: DEBUG
+
+  # do a short run, only read a few inputs then stop
+  input_item_limit: 10
+
+  output_chunk_max_count: 500
+
+  task_queue: itertq
+  itertq:
+    inputs_path: [../streamcorpus-pipeline/data/john-smith/john-smith-0.sc]
+
+  extractor: from_local_chunks
+
+  incremental_transforms: [clean_html, clean_visible]
+
+  batch_transforms: [factorie_batch, name_align_labels]
+
+  loaders: [to_local_chunks]
+
+  clean_html:
+    require_language_code: en
+
+  clean_visible:
+    require_clean_html: true
+
+  name_align_labels:
+    chain_selector: ALL
+    annotator_id: bagga-and-baldwin
+
+  factorie_batch:
+    # the scala binary to call
+    scala: ../scala-2.10.2/bin/scala
+    # directory full of jars to add to CLASSPATH
+    libdirs: [../streamcorpus-factorie/scala/lib]
+    # other things to append to CLASSPATH
+    classpath_tail: [../factorie, ../streamcorpus-factorie/scala/classes]
+    # current working directory to live in when running factorie (might alternatively be /tmp)
+    cwd: .
+
+  pythonpath:
+    # Tell streamcorpus.pipeline where to load more sources
+    factorie_path: ../streamcorpus-factorie/py/src
+  setup_modules:
+    # Tell streamcorpus.pipeline to init this module so that we can be in pipeline configs
+    factorie: streamcorpus.pipeline.factorie
+
+  to_local_chunks:
+    output_type: otherdir
+    output_path: /tmp
+    output_name: johnsmith-%(first)s-withfactorie
