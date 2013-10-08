@@ -48,12 +48,12 @@ streamcorpus.pipeline:
     # current working directory to live in when running factorie (might alternatively be /tmp)
     cwd: .
 
-  pythonpath:
-    # Tell streamcorpus.pipeline where to load more sources
-    factorie_path: ../streamcorpus-factorie/py/src
-  setup_modules:
-    # Tell streamcorpus.pipeline to init this module so that we can be in pipeline configs
-    factorie: streamcorpus.pipeline.factorie
+#  pythonpath:
+#    # Tell streamcorpus.pipeline where to load more sources
+#    factorie_path: ../streamcorpus-factorie/py/src
+#  setup_modules:
+#    # Tell streamcorpus.pipeline to init this module so that we can be in pipeline configs
+#    factorie: streamcorpus.pipeline.factorie
 
   to_local_chunks:
     output_type: otherdir

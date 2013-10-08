@@ -8,15 +8,11 @@ import subprocess
 ## prepare to run PyTest as a command
 from distutils.core import Command
 
-## explain this...
-#from distribute_setup import use_setuptools
-#use_setuptools()
-
 from setuptools import setup, find_packages
 
 from version import get_git_version
 VERSION = get_git_version()
-PROJECT = 'streamcorpus.pipeline.factorie'
+PROJECT = 'streamcorpus_factorie'
 AUTHOR = 'Diffeo, Inc.'
 AUTHOR_EMAIL = 'support@diffeo.com'
 DESC = 'Tools for building streamcorpus objects for particular collections of text used in TREC KBA.'
@@ -46,32 +42,11 @@ def recursive_glob_with_tree(treeroot, pattern):
     return results
 
 
-class InstallTestDependencies(Command):
-    '''install test dependencies'''
-
-    description = 'installs all dependencies required to run all tests'
-
-    user_options = []
-
-    def initialize_options(self):
-        pass
-
-    def finalize_options(self):
-        pass
-
-    def easy_install(self, packages):
-        cmd = ['easy_install']
-        if packages:
-            cmd.extend(packages)
-            errno = subprocess.call(cmd)
-            if errno:
-                raise SystemExit(errno)
-
-    def run(self):
-        if self.distribution.install_requires:
-            self.easy_install(self.distribution.install_requires)
-        if self.distribution.tests_require:
-            self.easy_install(self.distribution.tests_require)
+def _myinstall(pkgspec):
+    setup(
+        script_args = ['-q', 'easy_install', '-v', pkgspec],
+        script_name = 'easy_install'
+    )
 
 
 class PyTest(Command):
@@ -88,12 +63,10 @@ class PyTest(Command):
         pass
 
     def run(self):
+        _myinstall('pytest>2.3')
         if self.distribution.install_requires:
-            self.distribution.fetch_build_eggs(
-                self.distribution.install_requires)
-        if self.distribution.tests_require:
-            self.distribution.fetch_build_eggs(
-                self.distribution.tests_require)
+            for ir in self.distribution.install_requires:
+                _myinstall(ir)
 
         # reload sys.path for any new libraries installed
         import site
@@ -116,52 +89,20 @@ setup(
     url='',
     packages = find_packages('src'),
     package_dir = {'': 'src'},
-    namespace_packages = ['streamcorpus', 'streamcorpus.pipeline'],
-    cmdclass={'test': PyTest,
-              'install_test': InstallTestDependencies},
+    entry_points= {'streamcorpus.pipeline.stages': 'factorie_batch = streamcorpus_factorie:factorie_batch'},
+    cmdclass={'test': PyTest},
     # We can select proper classifiers later
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Topic :: Utilities',
         'License :: MIT',  ## MIT/X11 license http://opensource.org/licenses/MIT
     ],
-    tests_require=[
-        'pytest',
-        'ipdb',
-        'pytest-cov',
-        'pytest-xdist',
-        'pytest-timeout',
-        'pytest-incremental',
-        'pytest-capturelog',
-        'epydoc',
-    ],
     install_requires=[
-        'thrift',
-        'gevent',      ## required in .rpm
-        'kvlayer',
-        'redis',
-        'protobuf',
-        'requests',
         'streamcorpus-dev>=0.3.5',
-        'pyyaml',
-        'nltk',
-        'lxml',
-        'BeautifulSoup',
-        'boto',
-        'kazoo',
-        #'marisa-trie',
-        'jellyfish',
-        'nilsimsa>=0.2',
-        'pytest',       ## required in .rpm
-        'pycassa', 
-        'chromium_compact_language_detector',
-        'pytest',
-        'pytest-capturelog',
+        'streamcorpus_pipeline>=0.3.28',
     ],
     data_files = [
         ## this does not appear to actually put anything into the egg...
-        ('examples', recursive_glob('src/examples', '*.py')),
         ('configs', recursive_glob('configs', '*.yaml')),
-        ('data/john-smith', recursive_glob('data/john-smith', '*.*')),
-    ] + recursive_glob_with_tree('data/john-smith/original', '*')
+    ]
 )
