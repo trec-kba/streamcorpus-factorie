@@ -69,8 +69,15 @@ object Annotate1 {
                       mentionId = mentionId,
                       parentId = token.parseParentIndex,
                       dependencyPath = Some(token.parseLabel.categoryValue),
-                      equivId = equivId.toInt
-                     )
+                      equivId = equivId.toInt,
+                      // offsets allow alignment of output from multiple taggers or other metadata referring to parts of a document.
+                      // TODO: get the firstByte/lengthBytes and firstChar/lengthChars from FACTORIE output.
+                      // Ideally, both Bytes and Chars would be available
+                      //offsets = Map(
+                      //              OffsetType.Bytes -> Offset(OffsetType.Bytes, token.firstByte, token.lengthChars),
+                      //              OffsetType.Chars -> Offset(OffsetType.Chars, token.firstChar, token.lengthChars)
+                      //              )
+                      )
                 }
               )
             }
