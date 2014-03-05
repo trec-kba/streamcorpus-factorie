@@ -99,7 +99,7 @@ setup(
         'License :: OSI Approved :: MIT License',  ## MIT/X11 license http://opensource.org/licenses/MIT
     ],
     install_requires=[
-        'streamcorpus-dev>=0.3.5',
+        'streamcorpus>=0.3.5',
         'streamcorpus_pipeline>=0.3.28',
     ],
     data_files = [
