@@ -12,12 +12,10 @@ import subprocess
 import time
 
 from streamcorpus import Chunk
-from streamcorpus_pipeline.config import configure_logger
 from streamcorpus_pipeline.stages import BatchTransform
 
 
 logger = logging.getLogger(__name__)
-configure_logger(logger)
 
 
 class FactorieBase(object):
