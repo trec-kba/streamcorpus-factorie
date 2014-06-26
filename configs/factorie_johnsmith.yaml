@@ -7,7 +7,8 @@
 #   factorie/
 #   scala-2.10.2/
 
-streamcorpus.pipeline:
+streamcorpus_pipeline:
+  tmp_dir_path: /tmp
   embedded_logs: false
   log_level: DEBUG
 
@@ -15,10 +16,6 @@ streamcorpus.pipeline:
 #  input_item_limit: 10
 
   output_chunk_max_count: 500
-
-  task_queue: itertq
-  itertq:
-    inputs_path: [../streamcorpus-pipeline/data/john-smith/john-smith-0.sc]
 
   extractor: from_local_chunks
 

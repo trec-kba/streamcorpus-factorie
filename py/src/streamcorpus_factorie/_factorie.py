@@ -120,6 +120,14 @@ def _randstr(length):
 # I want functionality from FactorieBase, and I think I need this class to be tagged as BatchTransform
 class factorie_batch(BatchTransform, FactorieBase):
     "Wrapper for factorie language analysis and tagging"
+    config_name = 'factorie_batch'
+    default_config = {
+        'scala': 'scala',
+        'libdirs': [],
+        'classpath_tail': [],
+        'memory': '5G',
+        'cwd': None,
+    }
 
     def __init__(self, config):
         #BatchTransform.__init__(self, config)
