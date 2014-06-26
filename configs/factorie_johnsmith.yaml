@@ -12,7 +12,7 @@ streamcorpus.pipeline:
   log_level: DEBUG
 
   # do a short run, only read a few inputs then stop
-  input_item_limit: 10
+#  input_item_limit: 10
 
   output_chunk_max_count: 500
 

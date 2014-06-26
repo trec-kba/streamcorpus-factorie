@@ -87,7 +87,9 @@ setup(
     url='',
     packages = find_packages('src'),
     package_dir = {'': 'src'},
-    entry_points= {'streamcorpus.pipeline.stages': 'factorie_batch = streamcorpus_factorie:factorie_batch'},
+    entry_points= {
+        'streamcorpus_pipeline.stages': 'factorie_batch = streamcorpus_factorie:factorie_batch',
+    },
     cmdclass={'test': PyTest},
     # We can select proper classifiers later
     classifiers=[
